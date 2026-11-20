@@ -212,6 +212,15 @@ def naf_blocked(f, val):
     return any(c.tag == R + 'Naf' and evaluate_rule(next(iter(c)), val) == 'T' for c in f.iter())
 
 
+def as_check(c):
+    """模型偶尔把某个条件直接写成 "成立" 而不是 {"v": ..., "q": ...}：视为无引用的判断（按规则会降为“未知”）。"""
+    if isinstance(c, dict):
+        return c
+    if isinstance(c, str):
+        return {'v': c, 'q': ''}
+    return {}
+
+
 def norm(s):
     return re.sub(r'[\s，,。.；;：:“”"\'、（）()]', '', s or '')
 
@@ -221,7 +230,7 @@ def reason(RB, rules, ids, checks, qtext):
     val, judged, quoted = {}, 0, 0
     qn = norm(qtext)
     for lid, el in elem.items():
-        c = checks.get(lid) or {}
+        c = as_check(checks.get(lid))
         v = {'成立': 'T', '不成立': 'F'}.get(c.get('v'), 'U')
         if v != 'U':
             judged += 1
@@ -245,7 +254,7 @@ def reason(RB, rules, ids, checks, qtext):
         k = r['key']; st = status[k]
         if st not in ('applies', 'blocked', 'overridden'):
             continue
-        why = [f"[{lid}] {checks.get(lid, {}).get('v', '未知')}：{checks.get(lid, {}).get('q', '')[:30]}" for lid, _ in r['leaves']
+        why = [f"[{lid}] {as_check(checks.get(lid)).get('v', '未知')}：{(as_check(checks.get(lid)).get('q') or '')[:30]}" for lid, _ in r['leaves']
                if val.get(id(elem[lid])) != 'U']
         by = ''
         if st == 'overridden':
@@ -309,7 +318,8 @@ def main():
                       system='你是严谨的法律事实核验助手，只输出 JSON。', max_tokens=3000, seed=7)
         m = re.search(r'\{.*\}', raw, re.S)
         try:
-            return q['id'], json.loads(m.group(0)) if m else {}
+            d = json.loads(m.group(0)) if m else {}
+            return q['id'], d if isinstance(d, dict) else {}
         except json.JSONDecodeError:
             return q['id'], {}
     with ThreadPoolExecutor(a.workers) as ex:

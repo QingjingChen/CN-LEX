@@ -109,7 +109,8 @@ def main():
                       system='你是严谨的法律事实核验助手，只输出 JSON。', max_tokens=3000, seed=7)
         m = re.search(r'\{.*\}', raw, re.S)
         try:
-            return x['id'], json.loads(m.group(0)) if m else {}
+            d = json.loads(m.group(0)) if m else {}
+            return x['id'], d if isinstance(d, dict) else {}
         except json.JSONDecodeError:
             return x['id'], {}
     with ThreadPoolExecutor(a.workers) as ex:
@@ -124,7 +125,7 @@ def main():
         val = {}
         qn = CX.norm(x['fact'])
         for lid, el in elem.items():
-            c = checks[x['id']].get(lid) or {}
+            c = CX.as_check(checks[x['id']].get(lid))
             v = {'成立': 'T', '不成立': 'F'}.get(c.get('v'), 'U')
             if v != 'U' and not (c.get('q') and len(CX.norm(c['q'])) >= 4 and CX.norm(c['q']) in qn):
                 v = 'U'

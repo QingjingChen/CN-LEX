@@ -31,11 +31,11 @@ HERE = Path(__file__).resolve().parent
 LR = HERE.parent.parent
 L = '{http://docs.oasis-open.org/legalruleml/ns/v1.0/}'
 R = '{http://ruleml.org/spec}'
-CNLR = Namespace('http://example.org/cn-lrml/ontology#')
-NORM = Namespace('http://example.org/cn-lrml/norm/')
-PRED = Namespace('http://example.org/cn-lrml/pred/')
-OFF = Namespace('http://example.org/cn-lrml/offence/')
-AUTH = Namespace('http://example.org/cn-lrml/authority/')
+CNLR = Namespace('http://example.org/clexml/ontology#')
+NORM = Namespace('http://example.org/clexml/norm/')
+PRED = Namespace('http://example.org/clexml/pred/')
+OFF = Namespace('http://example.org/clexml/offence/')
+AUTH = Namespace('http://example.org/clexml/authority/')
 LRMLMM = Namespace('http://docs.oasis-open.org/legalruleml/ns/v1.0/metamodel#')
 AKN = 'http://example.org'              # AKN URI 前缀：http://example.org/akn/cn/act/...
 FILES = {'civil': ('civil', LR / 'civil_graph' / 'civil_graph.lrml'),
@@ -71,7 +71,7 @@ def xsd_ok(path):
 
 def main():
     g = Graph()
-    for p, ns in (('cnlr', CNLR), ('norm', NORM), ('pred', PRED), ('off', OFF), ('auth', AUTH), ('lrmlmm', LRMLMM), ('prov', PROV)):
+    for p, ns in (('clx', CNLR), ('norm', NORM), ('pred', PRED), ('off', OFF), ('auth', AUTH), ('lrmlmm', LRMLMM), ('prov', PROV)):
         g.bind(p, ns)
     # ---- 本体声明（TBox）
     for c, sup in ((CNLR.Norm, LRMLMM.Statement), (CNLR.ConstitutiveNorm, CNLR.Norm), (CNLR.PrescriptiveNorm, CNLR.Norm),

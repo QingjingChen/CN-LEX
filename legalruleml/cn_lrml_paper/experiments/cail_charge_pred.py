@@ -28,8 +28,18 @@ def load(split):
     return [json.loads(l) for l in open(f'{D}/exercise_contest_{split}.jsonl', encoding='utf-8')]
 
 
-TRAIN, VALID, TEST = load('train'), load('valid'), load('test')
-CHARGES = sorted({a for x in TRAIN + TEST for a in x['accusation']})
+# CAIL 数据只在本实验的 main() 中加载：其他脚本（QA、SCD）导入本模块时不应把 20 万条案件读进内存。
+TRAIN = VALID = TEST = None
+CHARGES = []
+
+
+def ensure_data():
+    global TRAIN, VALID, TEST, CHARGES
+    if TRAIN is None:
+        TRAIN, VALID, TEST = load('train'), load('valid'), load('test')
+        CHARGES[:] = sorted({a for x in TRAIN + TEST for a in x['accusation']})
+
+
 law = json.load(open(os.path.join(LR, 'crim_graph/law/criminal_law_2023.json'), encoding='utf-8'))
 G = json.load(open(os.path.join(HERE, '../lrml/crim_jurex_glossary.json'), encoding='utf-8'))
 JX = {key(v['name']): k for k, v in G['charges'].items()}
@@ -37,13 +47,15 @@ J = {list(x)[0]: list(x.values())[0] for x in json.load(open(os.path.join(LR, 'l
 FET = ('犯罪客体', '客观方面', '犯罪主体', '主观方面')
 
 art_count = collections.defaultdict(collections.Counter)
-for x in TRAIN:
-    if len(x['accusation']) == 1:
-        for a in x['relevant_articles']:
-            art_count[x['accusation'][0]][a] += 1
 
 
 def stat(c):
+    if not art_count:                       # 第一次需要法条表示时才统计训练集
+        ensure_data()
+        for x in TRAIN:
+            if len(x['accusation']) == 1:
+                for a in x['relevant_articles']:
+                    art_count[x['accusation'][0]][a] += 1
     arts = [a for a, _ in art_count[c].most_common(1)]
     return norm(c) + '。' + ''.join(''.join(law[str(a)]['paras']) for a in arts if str(a) in law)
 
@@ -140,6 +152,7 @@ def mean(per, ids):
 
 
 def main():
+    ensure_data()
     rng = random.Random(0)
     test = rng.sample(TEST, 2000)
     valid = random.Random(1).sample(VALID, 1000)

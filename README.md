@@ -15,6 +15,7 @@ review workbooks, exam questions and third-party datasets are **not** included
 | `legalruleml/crim_graph/` | the same for the Criminal Law (`crim_rules.py`, `crim2lrml.py`, `criminal_code.py`) |
 | `legalruleml/cn_lrml_paper/build/` | JUREX-4E → four-element LegalRuleML (`jurex2lrml.py`), auto-generated engine tests (`test_jurex_rules.py`), LEGO concept cards → LegalRuleML (`cards2lrml.py`) |
 | `legalruleml/cn_lrml_paper/experiments/` | RDF export and SPARQL competency questions; review-stage LegalRuleML export/reader; retrieval experiments (typed, directed normative relations: `civil_semantic.py`); retrieve → CLeXML subgraph → reasoning QA (`clexml_reason_qa.py`); similar-charge disambiguation (`scd_clexml.py`); CAIL2018 charge representation study |
+| `legalruleml/cn_lrml_paper/minimal_retrieval/` | **minimal civil retrieval experiment** (numpy only, < 1 s): reads the CLeXML LegalRuleML semantic web directly, two-stage retrieval with typed and directed normative relations, step-by-step NDCG explanation (`--explain`); `README_zh.md` walks through two examples. Its `data/` bundle (questions, articles, BGE-m3 vectors, `civil_review.lrml`) is produced by `experiments/export_minimal_bundle.py` and is not distributed |
 | `legalruleml/lcr_jurex/` | JUREX-4E similar-case retrieval setting (LeCaRDv2 / GEAR), data fetch script |
 
 ## Data (not distributed)
@@ -33,6 +34,7 @@ pip install -r legalruleml/cn_lrml_paper/requirements-retrieval.txt lxml rdflib 
 python legalruleml/civil_graph/lrml2ddl.py && python legalruleml/civil_graph/run_cases.py
 python legalruleml/cn_lrml_paper/build/jurex2lrml.py
 python legalruleml/cn_lrml_paper/experiments/civil_semantic.py
+python legalruleml/cn_lrml_paper/minimal_retrieval/minimal_retrieval.py --explain 529
 python legalruleml/cn_lrml_paper/experiments/clexml_reason_qa.py --law civil --offset 40
 ```
 
