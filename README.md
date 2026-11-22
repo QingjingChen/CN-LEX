@@ -1,4 +1,4 @@
-# CN-Onto · CLeXML
+# CN-LEX
 
 中文民法、刑法规则的 LegalRuleML 审核版资源。**仓库直接包含两份完整 LRML**，可克隆后读取，无需另找本机草稿、题库或模型。
 
