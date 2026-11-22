@@ -1,49 +1,49 @@
 {
-  "version": "review-2026-11-20",
-  "profile": "OASIS LegalRuleML 1.0 compact plus CNLR_REVIEW_META comments",
-  "path_normalization": {
-    "from": "absolute source-repository path",
-    "to": "LexReAct",
-    "scope": "metadata path strings only"
+ "version": "review-2026-11-20",
+ "profile": "OASIS LegalRuleML 1.0 compact plus CNLR_REVIEW_META comments",
+ "path_normalization": {
+  "from": "absolute source-repository path",
+  "to": "[source]",
+  "scope": "metadata path strings only"
+ },
+ "resources": {
+  "civil": {
+   "law": "civil",
+   "rules": 3389,
+   "draft_rows": 602,
+   "standard_overrides": 556,
+   "relations": {
+    "override": 556,
+    "depends_candidate": 6820,
+    "exception_candidate": 324,
+    "negative_condition_candidate": 128
+   },
+   "review_status": "pending_expert_review",
+   "path": "resources/civil/civil_review.lrml",
+   "sha256": "b11f63ce795dbc8c060236c2fe24974012565414d47c3600af256976aec1974d",
+   "original_sha256": "854fccaca36fe2cae640024db276c669e935382b01d329cdab334ff4a77903d8",
+   "size_bytes": 11825839,
+   "unmapped_rule_ids": []
   },
-  "resources": {
-    "civil": {
-      "law": "civil",
-      "rules": 3389,
-      "draft_rows": 602,
-      "standard_overrides": 556,
-      "relations": {
-        "override": 556,
-        "depends_candidate": 6820,
-        "exception_candidate": 324,
-        "negative_condition_candidate": 128
-      },
-      "review_status": "pending_expert_review",
-      "path": "resources/civil_review.lrml",
-      "sha256": "6fa25439a48ca0716abce0427367e39afb009e68265e2cb92b762c8705e2cb3f",
-      "original_sha256": "854fccaca36fe2cae640024db276c669e935382b01d329cdab334ff4a77903d8",
-      "size_bytes": 11825839,
-      "unmapped_rule_ids": []
-    },
-    "criminal": {
-      "law": "criminal",
-      "rules": 2875,
-      "draft_rows": 467,
-      "standard_overrides": 431,
-      "relations": {
-        "override": 431,
-        "depends_candidate": 774313,
-        "exception_candidate": 484,
-        "negative_condition_candidate": 1000
-      },
-      "review_status": "pending_expert_review",
-      "path": "resources/criminal_review.lrml",
-      "sha256": "080968086b290ea4ad91d5976aa4bb8ee795eddde8a5cdbfb5d95e7d5f5a530f",
-      "original_sha256": "1b1126792b32a32f18df4e4bc12bf19d5e8dc43b6df0b3c5bb321e118fb461e9",
-      "size_bytes": 38499438,
-      "unmapped_rule_ids": [
-        "k-minor-conv"
-      ]
-    }
+  "criminal": {
+   "law": "criminal",
+   "rules": 2875,
+   "draft_rows": 467,
+   "standard_overrides": 431,
+   "relations": {
+    "override": 431,
+    "depends_candidate": 774313,
+    "exception_candidate": 484,
+    "negative_condition_candidate": 1000
+   },
+   "review_status": "pending_expert_review",
+   "path": "resources/criminal/criminal_review.lrml",
+   "sha256": "820977cff0e666a3cd77d44c9b0aed86e9de04386709a824bd51798fd35783b7",
+   "original_sha256": "1b1126792b32a32f18df4e4bc12bf19d5e8dc43b6df0b3c5bb321e118fb461e9",
+   "size_bytes": 38499438,
+   "unmapped_rule_ids": [
+    "k-minor-conv"
+   ]
   }
+ }
 }

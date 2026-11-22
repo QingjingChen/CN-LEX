@@ -1,0 +1,10 @@
+# CQ1 Provenance: Which norms are grounded in Civil Code art. 1199, under which authority and strength?
+PREFIX clx: <http://example.org/clexml/ontology#>
+PREFIX norm: <http://example.org/clexml/norm/>
+PREFIX pred: <http://example.org/clexml/pred/>
+PREFIX off:  <http://example.org/clexml/offence/>
+PREFIX auth: <http://example.org/clexml/authority/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?norm ?auth ?strength WHERE {
+  ?norm clx:sourceProvision ?p ; clx:authority ?auth ; clx:strength ?strength .
+  FILTER(STRENDS(STR(?p), "civil-code/zho@/!main#art_1199")) }

@@ -1,0 +1,10 @@
+# CQ6 Authority: Which rule-layer assertions rest on doctrine or judicial interpretation rather than statutory text?
+PREFIX clx: <http://example.org/clexml/ontology#>
+PREFIX norm: <http://example.org/clexml/norm/>
+PREFIX pred: <http://example.org/clexml/pred/>
+PREFIX off:  <http://example.org/clexml/offence/>
+PREFIX auth: <http://example.org/clexml/authority/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?code ?auth (COUNT(?norm) AS ?n) WHERE {
+  ?norm clx:authority ?auth ; clx:code ?code . FILTER(?auth IN (auth:doctrine, auth:spc)) }
+GROUP BY ?code ?auth ORDER BY ?code ?auth

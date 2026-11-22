@@ -1,0 +1,9 @@
+# CQ5 Offence relations: Which offences are related to robbery (抢劫罪) by conversion or demarcation?
+PREFIX clx: <http://example.org/clexml/ontology#>
+PREFIX norm: <http://example.org/clexml/norm/>
+PREFIX pred: <http://example.org/clexml/pred/>
+PREFIX off:  <http://example.org/clexml/offence/>
+PREFIX auth: <http://example.org/clexml/authority/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?other WHERE {
+  { off:抢劫罪 clx:relatedOffence ?other } UNION { ?other clx:relatedOffence off:抢劫罪 } }

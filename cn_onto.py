@@ -103,7 +103,7 @@ def article_neighbours(path, types=None, valid_articles=None):
 
 
 def resource(law):
-    return RESOURCES / f'{law}_review.lrml'
+    return RESOURCES / law / f'{law}_review.lrml'
 
 
 def stats(document):
