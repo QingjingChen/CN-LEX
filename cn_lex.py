@@ -166,7 +166,7 @@ def validate(document, expected):
 
 
 def main():
-    ap = argparse.ArgumentParser(description='CN-Onto: full civil/criminal review resources; Python standard library only.')
+    ap = argparse.ArgumentParser(description='CN-LEX: civil and criminal LegalRuleML resources; Python standard library only.')
     commands = ap.add_subparsers(dest='command', required=True)
     stat = commands.add_parser('stats', help='Count full resources and typed relations')
     stat.add_argument('--law', choices=('civil', 'criminal', 'both'), default='both')

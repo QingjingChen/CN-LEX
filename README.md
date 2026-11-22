@@ -15,13 +15,13 @@ provision through `lrml:LegalSource/@sameAs`, an Akoma Ntoso URI such as
 
 ## Use
 
-`cn_onto.py` needs only the Python standard library:
+`cn_lex.py` needs only the Python standard library:
 
 ```sh
-python cn_onto.py stats                       # rules, overrides and candidate relations
-python cn_onto.py article 145                 # rules of an article, with RuleML and directed overrides
-python cn_onto.py export --law civil --output civil_rules.jsonl
-python cn_onto.py validate                    # hashes, counts, references, override direction
+python cn_lex.py stats                       # rules, overrides and candidate relations
+python cn_lex.py article 145                 # rules of an article, with RuleML and directed overrides
+python cn_lex.py export --law civil --output civil_rules.jsonl
+python cn_lex.py validate                    # hashes, counts, references, override direction
 ```
 
 Reasoning and queries (`pip install -r requirements.txt`):

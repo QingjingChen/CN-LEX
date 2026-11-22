@@ -5,7 +5,7 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import cn_onto as C
+import cn_lex as C
 
 
 class ResourcesTest(unittest.TestCase):
