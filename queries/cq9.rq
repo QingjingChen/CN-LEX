@@ -1,0 +1,10 @@
+# CQ9 Version anchoring: Which criminal norms rest on provisions inserted by later amendments (第N条之M) of the consolidated 2023 text?
+PREFIX clx: <http://example.org/clexml/ontology#>
+PREFIX norm: <http://example.org/clexml/norm/>
+PREFIX pred: <http://example.org/clexml/pred/>
+PREFIX off:  <http://example.org/clexml/offence/>
+PREFIX auth: <http://example.org/clexml/authority/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?norm ?prov WHERE {
+  ?norm clx:code "criminal" ; clx:sourceProvision ?prov .
+  FILTER(REGEX(STR(?prov), "zho@2023-12-29/!main#art_[0-9]+_[0-9]+$")) }

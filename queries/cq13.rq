@@ -1,0 +1,9 @@
+# CQ13 Purpose element (JUREX): Which offences require a specific purpose in their subjective aspect?
+PREFIX clx: <http://example.org/clexml/ontology#>
+PREFIX norm: <http://example.org/clexml/norm/>
+PREFIX pred: <http://example.org/clexml/pred/>
+PREFIX off:  <http://example.org/clexml/offence/>
+PREFIX auth: <http://example.org/clexml/authority/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?c WHERE {
+  ?n clx:layer "criminal_jurex" ; clx:hasCondition pred:purpose ; rdfs:comment ?c . }

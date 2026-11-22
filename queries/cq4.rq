@@ -1,0 +1,10 @@
+# CQ4 Offence elements: What are the four constituent elements of theft (盗窃罪) and on which article is it grounded?
+PREFIX clx: <http://example.org/clexml/ontology#>
+PREFIX norm: <http://example.org/clexml/norm/>
+PREFIX pred: <http://example.org/clexml/pred/>
+PREFIX off:  <http://example.org/clexml/offence/>
+PREFIX auth: <http://example.org/clexml/authority/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?object ?objective ?subject ?subjective ?art WHERE {
+  off:盗窃罪 clx:hasObject ?object ; clx:hasObjectiveAspect ?objective ;
+          clx:hasSubject ?subject ; clx:hasSubjectiveAspect ?subjective ; clx:groundedIn ?art . }
