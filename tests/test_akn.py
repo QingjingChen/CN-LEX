@@ -46,6 +46,28 @@ class AknTest(unittest.TestCase):
             text = f.read_text(encoding='utf-8')
             self.assertIsNone(re.search(r'\n\n第[一二三四五]分编　[^<"]*(</lrml:Comment>|""")', text), f.name)
 
+    def test_passive_modifications(self):
+        tree = ET.parse(DOCS['/akn/cn/act/1997-03-14/criminal-law/zho@2023-12-29/!main'])
+        ids = {e.get('eId') for e in tree.iter() if e.get('eId')}
+        mods = list(tree.iter(AKN + 'textualMod'))
+        self.assertEqual(len(mods), 367)
+        self.assertEqual(len(list(tree.iter(AKN + 'passiveRef'))), 14)
+        for m in mods:
+            for tag in ('source', 'destination'):
+                self.assertIn(m.find(AKN + tag).get('href')[1:], ids, m.get('eId'))
+            self.assertIn(m.find(AKN + 'force').get('period')[1:], ids, m.get('eId'))
+            self.assertTrue(m.find(AKN + 'old') is not None or m.find(AKN + 'new') is not None, m.get('eId'))
+        periods = {e.get('period')[1:] for e in tree.iter() if e.get('period')}
+        self.assertTrue(periods <= ids)
+
+    def test_timeline_reproduces_official_text(self):
+        import json
+        tl = json.loads((ROOT / 'data/statutes/criminal_timeline.json').read_text(encoding='utf-8'))
+        self.assertEqual(tl['manual_review'], [])
+        self.assertEqual(tl['final_paragraph_split_differences'], [])
+        residual = {d['article'] for d in tl['final_content_differences'] + tl['never_amended_articles_differing_from_official']}
+        self.assertEqual(residual, {'art_187', 'art_308_1', 'art_367'})   # explained in resources/akn/criminal-law-timeline.md
+
     def test_schema_validity(self):
         try:
             from lxml import etree

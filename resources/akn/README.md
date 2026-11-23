@@ -31,17 +31,53 @@ sources (`lrml:LegalSource/@sameAs`); all 5,968 such URIs resolve to an element 
 
 - `identification`: FRBR Work, Expression (language `zho`) and Manifestation; author `#npc`.
 - `publication` (Civil Code): Presidential Order No. 45, 2020-05-28.
-- `lifecycle`: adoption and entry into force (Civil Code 2021-01-01, Art. 1260; Criminal Law 1997-10-01, Art. 452);
-  for the Criminal Law, the 13 amending acts listed in the header of the consolidated text, as `passiveRef`s.
-- `temporalData`: the in-force interval.
+- `lifecycle`: adoption and entry into force (Civil Code 2021-01-01, Art. 1260; Criminal Law 1997-10-01, Art. 452).
+  For the Criminal Law, one event per modifying act and a second event where the act entered into force later than
+  it was adopted (Amendments VIII, IX, XI, XII): 14 modifying acts, 20 events.
+- `analysis/passiveModifications` (Criminal Law): 367 `textualMod`s (193 substitution, 165 insertion, 9 repeal), each
+  with the modifying act (`source` → `passiveRef`), the provision changed (`destination`, the paragraph or item where
+  it still exists) and the period from which the change applies (`force/@period` → `temporalGroup`).
+- `temporalData`: `tg_1` = original text in force from 1997-10-01; `tg_k+1` = in force from the entry into force of
+  the k-th modifying act. Every modified article, paragraph and item carries `@period` = the group of the last act
+  that changed it, so the version of each provision can be dated.
+- `references`: the original act and the 14 modifying acts (`passiveRef amd_1` … `amd_14`).
+
+### Exact words changed
+
+`textualMod/old` and `new` may only contain elements of another namespace (`anyOtherType`). The words are therefore
+carried in a CN-LEX extension element, `cnlex:words` (`xmlns:cnlex="https://github.com/QingjingChen/CN-LEX/ns"`):
+
+```xml
+<textualMod eId="pmod_104" type="substitution">
+  <source href="#amd_9"/>                     <!-- 2009 NPCSC decision amending certain laws -->
+  <destination href="#art_381__para_1"/>
+  <force period="#tg_10"/>
+  <new><cnlex:words n="1">征收、</cnlex:words></new>   <!-- 征用 → 征收、征用 -->
+</textualMod>
+```
+
+For substitutions with at most three changed spans, `old`/`new` hold those spans, paired by `@n`. For insertions,
+repeals and extensive rewrites, they hold the whole paragraph text.
+
+### How the modifications were derived and checked
+
+`tools/akn_timeline.py` starts from the 1997 text, applies the modifying acts in order, parses each instruction
+(增加…作为第N条之K, 将第N条第M款修改为, 中的“x”修改为“y”, 删去…), and writes `data/statutes/criminal_timeline.json`.
+No instruction needed manual handling. The reconstructed text was compared with the official consolidated text of
+2023-12-29 (`data/statutes/criminal_law_2023-12-29.txt`). All 505 articles and paragraph divisions match, and three
+articles differ by one character each. See `criminal-law-timeline.md` for these differences and the open modelling
+questions. The texts of the acts (zh.wikisource.org) are listed with hashes in
+`data/statutes/criminal_versions/sources.json`.
 
 ## Known limitations
 
 - No `publication` for the Criminal Law: the promulgation order of the 1997 revision has not been verified.
-- Amendments are recorded as lifecycle events only; their `textualMod`s (which provisions each amendment changed)
-  and their own dates of entry into force are not yet encoded in `analysis`.
-- The URIs of the amending acts are assigned by CN-LEX following the Akoma Ntoso naming convention; these acts are
-  not yet available as Akoma Ntoso documents. Judicial interpretations and guiding cases are not yet encoded.
+- The modifying acts are taken from Wikisource transcriptions, not from the official gazette; they are checked only
+  through the reconstruction above.
+- The URIs of the modifying acts are assigned by CN-LEX following the Akoma Ntoso naming convention; these acts are
+  not yet available as Akoma Ntoso documents, so `activeModifications` are not encoded. Judicial interpretations and
+  guiding cases are not yet encoded.
+- The Civil Code has not been amended; its repeal of nine laws (Art. 1260) is not yet encoded as `activeModifications`.
 - `eId`s only; `wId`s are not assigned. Text is Chinese only.
 
-Rebuild from the official texts in `data/statutes/` with `python tools/build_akn.py`.
+Rebuild with `python tools/akn_timeline.py` (timeline) and then `python tools/build_akn.py` (documents).

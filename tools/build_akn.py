@@ -12,6 +12,7 @@ A paragraph is a line of the article; lines starting with an item number (（一
 which is how the existing paragraph URIs were numbered.
 """
 import datetime
+import json
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -19,7 +20,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 AKN = 'http://docs.oasis-open.org/legaldocml/ns/akn/3.0'
+CNLEX = 'https://github.com/QingjingChen/CN-LEX/ns'          # extension namespace for the exact words changed
 ET.register_namespace('', AKN)
+ET.register_namespace('cnlex', CNLEX)
+TIMELINE = ROOT / 'data' / 'statutes' / 'criminal_timeline.json'
 
 CN = '零一二三四五六七八九十百千'
 ART = re.compile(rf'^第([{CN}]+)条(?:之([{CN}]+))?　(.*)$')
@@ -48,6 +52,19 @@ LAWS = {
 
 
 AMEND = re.compile(r'(\d{4})年(\d{1,2})月(\d{1,2})日(中华人民共和国刑法修正案(?:（([一二三四五六七八九十]+)）)?|《全国人民代表大会常务委员会关于修改部分法律的决定》)')
+
+
+def act_uri(step):
+    """AKN URI assigned by CN-LEX to an amending act (naming convention; the act itself is not yet in AKN)."""
+    t = step['act']
+    if '修正案' in t:
+        m = re.search(r'（([一二三四五六七八九十]+)）', t)
+        name = f'criminal-law-amendment-{cn2int(m.group(1)) if m else 1}'
+    elif '外汇' in t:
+        name = 'decision-foreign-exchange-crimes'
+    else:
+        name = 'decision-amending-certain-laws'
+    return f"/akn/cn/act/{step['adopted']}/{name}/zho@"
 
 
 def amendments(preface):
@@ -213,21 +230,55 @@ def build(law, today):
     sub(m, 'FRBRauthor', href='#cnlex')
     if cfg['publication']:
         sub(meta, 'publication', **cfg['publication'])
-    amends = amendments(preface) if law == 'criminal' else []
+    steps = json.loads(TIMELINE.read_text(encoding='utf-8'))['steps'] if law == 'criminal' and TIMELINE.exists() else []
     life = sub(meta, 'lifecycle', source='#cnlex')
     sub(life, 'eventRef', eId='evt_1', date=cfg['work_date'][0], source='#original', type='generation')
     sub(life, 'eventRef', eId='evt_2', date=cfg['in_force'], source='#original', type='generation')
-    for i, (date, _title, _uri) in enumerate(amends, 1):
-        sub(life, 'eventRef', eId=f'evt_{i + 2}', date=date, source=f'#amd_{i}', type='amendment')
+    groups = [('tg_1', 'evt_2')]
+    n_evt = 2
+    for i, st in enumerate(steps, 1):
+        n_evt += 1
+        sub(life, 'eventRef', eId=f'evt_{n_evt}', date=st['adopted'], source=f'#amd_{i}', type='amendment')
+        if st['in_force'] and st['in_force'] != st['adopted']:
+            n_evt += 1
+            sub(life, 'eventRef', eId=f'evt_{n_evt}', date=st['in_force'], source=f'#amd_{i}', type='amendment')
+        groups.append((f'tg_{i + 1}', f'evt_{n_evt}'))
+    if steps:
+        analysis = sub(meta, 'analysis', source='#cnlex')
+        pmods = sub(analysis, 'passiveModifications')
+        k = 0
+        for i, st in enumerate(steps, 1):
+            for r in st['modifications']:
+                k += 1
+                dest = r['destination'] or ('art_' + r['article'].replace('-', '_'))
+                tm = sub(pmods, 'textualMod', eId=f'pmod_{k}', type=r['type'])
+                sub(tm, 'source', href=f'#amd_{i}')
+                sub(tm, 'destination', href=f'#{dest}')
+                sub(tm, 'force', period=f'#tg_{i + 1}')
+                if r['type'] == 'substitution' and len(r['words']) <= 3:
+                    # short changes: the exact words, paired old/new by @n
+                    pairs = [(str(n), w['old'], w['new']) for n, w in enumerate(r['words'], 1)]
+                else:
+                    # insertions, repeals and extensive rewrites: the whole paragraph (or article) text
+                    pairs = [('1', r['old'] if r['type'] != 'insertion' else '',
+                              r['new'] if r['type'] != 'repeal' else '')]
+                for tag, pos in (('old', 1), ('new', 2)):
+                    if any(pr[pos] for pr in pairs):
+                        holder = sub(tm, tag)
+                        for pr in pairs:
+                            if pr[pos]:
+                                w = ET.SubElement(holder, f'{{{CNLEX}}}words', n=pr[0])
+                                w.text = pr[pos]
     temp = sub(meta, 'temporalData', source='#cnlex')
-    sub(sub(temp, 'temporalGroup', eId='tg_1'), 'timeInterval', start='#evt_2', refersTo='#inForce')
+    for gid, evt in groups:
+        sub(sub(temp, 'temporalGroup', eId=gid), 'timeInterval', start=f'#{evt}', refersTo='#inForce')
     refs = sub(meta, 'references', source='#cnlex')
     sub(refs, 'original', eId='original', href=work + '/' + ('zho@' if law == 'civil' else f"zho@{cfg['work_date'][0]}"),
         showAs=cfg['title'])
-    for i, (_date, title, uri) in enumerate(amends, 1):
-        sub(refs, 'passiveRef', eId=f'amd_{i}', href=uri, showAs=title)
+    for i, st in enumerate(steps, 1):
+        sub(refs, 'passiveRef', eId=f'amd_{i}', href=act_uri(st), showAs=st['act'])
     sub(refs, 'TLCOrganization', eId='npc', href='/ontology/organization/cn/npc', showAs="National People's Congress")
-    if amends:
+    if steps:
         sub(refs, 'TLCOrganization', eId='npcsc', href='/ontology/organization/cn/npcsc',
             showAs="Standing Committee of the National People's Congress")
     sub(refs, 'TLCOrganization', eId='cnlex', href='/ontology/organization/cnlex', showAs='CN-LEX')
@@ -243,6 +294,18 @@ def build(law, today):
             emit_article(body, node)
         else:
             emit_container(body, node)
+    if steps:
+        by_eid = {e.get('eId'): e for e in doc.iter() if e.get('eId')}
+        latest = {}
+        for i, st in enumerate(steps, 1):
+            for r in st['modifications']:
+                if r['destination'] and r['type'] != 'repeal':
+                    latest[r['destination']] = i
+                    if r['type'] == 'insertion' and r['destination'].endswith('__para_1'):
+                        latest.setdefault('art_' + r['article'].replace('-', '_'), i)
+        for eid, i in latest.items():
+            if eid in by_eid:
+                by_eid[eid].set('period', f'#tg_{i + 1}')
     n_art = len(list(doc.iter(f'{{{AKN}}}article')))
     if cfg['articles'] is not None and n_art != cfg['articles']:
         raise ValueError(f'{law}: {n_art} articles, expected {cfg["articles"]}')
