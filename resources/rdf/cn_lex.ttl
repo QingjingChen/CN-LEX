@@ -21273,9 +21273,7 @@ clx:sourceProvision a owl:ObjectProperty ;
 <http://example.org/akn/cn/act/2020-05-28/civil-code/zho@/!main#art_385> a clx:Provision ;
     rdfs:label "《民法典》第三百八十五条"@zh ;
     clx:code "civil" ;
-    clx:text """《民法典》第三百八十五条　已经登记的地役权变更、转让或者消灭的，应当及时办理变更登记或者注销登记。
-
-第四分编　担保物权"""@zh .
+    clx:text """《民法典》第三百八十五条　已经登记的地役权变更、转让或者消灭的，应当及时办理变更登记或者注销登记。"""@zh .
 
 <http://example.org/akn/cn/act/2020-05-28/civil-code/zho@/!main#art_395__para_1> a clx:Provision ;
     rdfs:label "《民法典》第395条第1款"@zh ;
@@ -37563,9 +37561,7 @@ pred:tortfeasorIdentified a clx:Predicate .
 <http://example.org/akn/cn/act/2020-05-28/civil-code/zho@/!main#art_457> a clx:Provision ;
     rdfs:label "《民法典》第四百五十七条"@zh ;
     clx:code "civil" ;
-    clx:text """《民法典》第四百五十七条　留置权人对留置财产丧失占有或者留置权人接受债务人另行提供担保的，留置权消灭。
-
-第五分编　占　　有"""@zh .
+    clx:text """《民法典》第四百五十七条　留置权人对留置财产丧失占有或者留置权人接受债务人另行提供担保的，留置权消灭。"""@zh .
 
 <http://example.org/akn/cn/act/2020-05-28/civil-code/zho@/!main#art_46> a clx:Provision ;
     rdfs:label "《民法典》第四十六条"@zh ;
@@ -37673,9 +37669,7 @@ pred:tortfeasorIdentified a clx:Predicate .
 <http://example.org/akn/cn/act/2020-05-28/civil-code/zho@/!main#art_594> a clx:Provision ;
     rdfs:label "《民法典》第五百九十四条"@zh ;
     clx:code "civil" ;
-    clx:text """《民法典》第五百九十四条　因国际货物买卖合同和技术进出口合同争议提起诉讼或者申请仲裁的时效期间为四年。
-
-第二分编　典型合同"""@zh .
+    clx:text """《民法典》第五百九十四条　因国际货物买卖合同和技术进出口合同争议提起诉讼或者申请仲裁的时效期间为四年。"""@zh .
 
 <http://example.org/akn/cn/act/2020-05-28/civil-code/zho@/!main#art_597> a clx:Provision ;
     rdfs:label "《民法典》第五百九十七条"@zh ;
@@ -39050,9 +39044,7 @@ pred:supersededWill a clx:Predicate .
 <http://example.org/akn/cn/act/2020-05-28/civil-code/zho@/!main#art_322> a clx:Provision ;
     rdfs:label "《民法典》第三百二十二条"@zh ;
     clx:code "civil" ;
-    clx:text """《民法典》第三百二十二条　因加工、附合、混合而产生的物的归属，有约定的，按照约定；没有约定或者约定不明确的，依照法律规定；法律没有规定的，按照充分发挥物的效用以及保护无过错当事人的原则确定。因一方当事人的过错或者确定物的归属造成另一方当事人损害的，应当给予赔偿或者补偿。
-
-第三分编　用益物权"""@zh .
+    clx:text """《民法典》第三百二十二条　因加工、附合、混合而产生的物的归属，有约定的，按照约定；没有约定或者约定不明确的，依照法律规定；法律没有规定的，按照充分发挥物的效用以及保护无过错当事人的原则确定。因一方当事人的过错或者确定物的归属造成另一方当事人损害的，应当给予赔偿或者补偿。"""@zh .
 
 <http://example.org/akn/cn/act/2020-05-28/civil-code/zho@/!main#art_327> a clx:Provision ;
     rdfs:label "《民法典》第三百二十七条"@zh ;
@@ -40988,9 +40980,7 @@ pred:revoked a clx:Predicate .
 <http://example.org/akn/cn/act/2020-05-28/civil-code/zho@/!main#art_978> a clx:Provision ;
     rdfs:label "《民法典》第九百七十八条"@zh ;
     clx:code "civil" ;
-    clx:text """《民法典》第九百七十八条　合伙合同终止后，合伙财产在支付因终止而产生的费用以及清偿合伙债务后有剩余的，依据本法第九百七十二条的规定进行分配。
-
-第三分编　准合同"""@zh .
+    clx:text """《民法典》第九百七十八条　合伙合同终止后，合伙财产在支付因终止而产生的费用以及清偿合伙债务后有剩余的，依据本法第九百七十二条的规定进行分配。"""@zh .
 
 <http://example.org/akn/cn/act/2020-05-28/civil-code/zho@/!main#art_988> a clx:Provision ;
     rdfs:label "《民法典》第九百八十八条"@zh ;
@@ -47495,9 +47485,7 @@ pred:timeBarred a clx:Predicate .
 <http://example.org/akn/cn/act/2020-05-28/civil-code/zho@/!main#art_239> a clx:Provision ;
     rdfs:label "《民法典》第二百三十九条"@zh ;
     clx:code "civil" ;
-    clx:text """《民法典》第二百三十九条　本章规定的物权保护方式，可以单独适用，也可以根据权利被侵害的情形合并适用。
-
-第二分编　所有权"""@zh .
+    clx:text """《民法典》第二百三十九条　本章规定的物权保护方式，可以单独适用，也可以根据权利被侵害的情形合并适用。"""@zh .
 
 <http://example.org/akn/cn/act/2020-05-28/civil-code/zho@/!main#art_29> a clx:Provision ;
     rdfs:label "《民法典》第二十九条"@zh ;

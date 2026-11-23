@@ -7,6 +7,7 @@ provision through `lrml:LegalSource/@sameAs`, an Akoma Ntoso URI such as
 
 | Paper | Path | |
 |---|---|---|
+| Sect. 3 | `resources/akn/` | Akoma Ntoso 3.0 documents of the Civil Code (1,260 articles) and the Criminal Law (505 articles, as amended to 2023-12-29): book, part, chapter, section, article, paragraph and item, with FRBR metadata; every `eId` matches the URIs used by the rules |
 | Sect. 3 | `resources/civil/`, `resources/criminal/` | expert outlines with hand-written rules (`*_graph.lrml`), converted expert resources (`civil_cards.lrml`, `crim_jurex.lrml`), review-stage exports (`*_review.lrml`: 3,389 civil and 2,875 criminal rules) |
 | Sect. 3 | `resources/rdf/`, `queries/` | RDF graph and 13 SPARQL competency questions |
 | Sect. 4 | `studies/extraction/` | expert review of 18 rows (102 rules) |
@@ -35,4 +36,13 @@ python tools/cq_eval.py                                   # competency questions
 python studies/retrieval/or_flattening.py                 # 114 of 537 disjunctive rules lose "or"
 ```
 
-`validate` checks integrity, not XSD validity or legal correctness; `resources/schema/` holds the OASIS schemas.
+Akoma Ntoso layer:
+
+```sh
+python tools/build_akn.py                     # rebuild resources/akn/ from the official texts in data/statutes/
+python -m unittest tests.test_akn             # structure, unique eIds, every AKN URI of the rules resolves,
+                                              # and validation against the OASIS Akoma Ntoso 3.0 schema (needs lxml)
+```
+
+`validate` checks the integrity of the review exports, not legal correctness. `resources/schema/` holds the OASIS
+LegalRuleML 1.0 schemas and, in `akn/`, the Akoma Ntoso 3.0 schema (OASIS Standard, 29 August 2018).
