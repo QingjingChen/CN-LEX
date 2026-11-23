@@ -25,9 +25,47 @@
      <FRBRauthor href="#cnlex" />
     </FRBRManifestation>
    </identification>
+   <lifecycle source="#cnlex">
+    <eventRef eId="evt_1" date="1997-03-14" source="#original" type="generation" />
+    <eventRef eId="evt_2" date="1997-10-01" source="#original" type="generation" />
+    <eventRef eId="evt_3" date="1999-12-25" source="#amd_1" type="amendment" />
+    <eventRef eId="evt_4" date="2001-08-31" source="#amd_2" type="amendment" />
+    <eventRef eId="evt_5" date="2001-12-29" source="#amd_3" type="amendment" />
+    <eventRef eId="evt_6" date="2002-12-28" source="#amd_4" type="amendment" />
+    <eventRef eId="evt_7" date="2005-02-28" source="#amd_5" type="amendment" />
+    <eventRef eId="evt_8" date="2006-06-29" source="#amd_6" type="amendment" />
+    <eventRef eId="evt_9" date="2009-02-28" source="#amd_7" type="amendment" />
+    <eventRef eId="evt_10" date="2009-08-27" source="#amd_8" type="amendment" />
+    <eventRef eId="evt_11" date="2011-02-25" source="#amd_9" type="amendment" />
+    <eventRef eId="evt_12" date="2015-08-29" source="#amd_10" type="amendment" />
+    <eventRef eId="evt_13" date="2017-11-04" source="#amd_11" type="amendment" />
+    <eventRef eId="evt_14" date="2020-12-26" source="#amd_12" type="amendment" />
+    <eventRef eId="evt_15" date="2023-12-29" source="#amd_13" type="amendment" />
+   </lifecycle>
+   <temporalData source="#cnlex">
+    <temporalGroup eId="tg_1">
+     <timeInterval start="#evt_2" refersTo="#inForce" />
+    </temporalGroup>
+   </temporalData>
    <references source="#cnlex">
+    <original eId="original" href="/akn/cn/act/1997-03-14/criminal-law/zho@1997-03-14" showAs="中华人民共和国刑法" />
+    <passiveRef eId="amd_1" href="/akn/cn/act/1999-12-25/criminal-law-amendment-1/zho@" showAs="中华人民共和国刑法修正案" />
+    <passiveRef eId="amd_2" href="/akn/cn/act/2001-08-31/criminal-law-amendment-2/zho@" showAs="中华人民共和国刑法修正案（二）" />
+    <passiveRef eId="amd_3" href="/akn/cn/act/2001-12-29/criminal-law-amendment-3/zho@" showAs="中华人民共和国刑法修正案（三）" />
+    <passiveRef eId="amd_4" href="/akn/cn/act/2002-12-28/criminal-law-amendment-4/zho@" showAs="中华人民共和国刑法修正案（四）" />
+    <passiveRef eId="amd_5" href="/akn/cn/act/2005-02-28/criminal-law-amendment-5/zho@" showAs="中华人民共和国刑法修正案（五）" />
+    <passiveRef eId="amd_6" href="/akn/cn/act/2006-06-29/criminal-law-amendment-6/zho@" showAs="中华人民共和国刑法修正案（六）" />
+    <passiveRef eId="amd_7" href="/akn/cn/act/2009-02-28/criminal-law-amendment-7/zho@" showAs="中华人民共和国刑法修正案（七）" />
+    <passiveRef eId="amd_8" href="/akn/cn/act/2009-08-27/decision-amending-certain-laws/zho@" showAs="全国人民代表大会常务委员会关于修改部分法律的决定" />
+    <passiveRef eId="amd_9" href="/akn/cn/act/2011-02-25/criminal-law-amendment-8/zho@" showAs="中华人民共和国刑法修正案（八）" />
+    <passiveRef eId="amd_10" href="/akn/cn/act/2015-08-29/criminal-law-amendment-9/zho@" showAs="中华人民共和国刑法修正案（九）" />
+    <passiveRef eId="amd_11" href="/akn/cn/act/2017-11-04/criminal-law-amendment-10/zho@" showAs="中华人民共和国刑法修正案（十）" />
+    <passiveRef eId="amd_12" href="/akn/cn/act/2020-12-26/criminal-law-amendment-11/zho@" showAs="中华人民共和国刑法修正案（十一）" />
+    <passiveRef eId="amd_13" href="/akn/cn/act/2023-12-29/criminal-law-amendment-12/zho@" showAs="中华人民共和国刑法修正案（十二）" />
     <TLCOrganization eId="npc" href="/ontology/organization/cn/npc" showAs="National People's Congress" />
+    <TLCOrganization eId="npcsc" href="/ontology/organization/cn/npcsc" showAs="Standing Committee of the National People's Congress" />
     <TLCOrganization eId="cnlex" href="/ontology/organization/cnlex" showAs="CN-LEX" />
+    <TLCConcept eId="inForce" href="/ontology/concept/inForce" showAs="in force" />
    </references>
   </meta>
   <preface>

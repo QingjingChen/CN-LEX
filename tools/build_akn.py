@@ -35,12 +35,32 @@ LAWS = {
     'civil': dict(
         source='civil_code_2020-05-28.txt', out='civil-code.akn.xml', title='中华人民共和国民法典',
         work='/akn/cn/act/2020-05-28/civil-code', work_date=('2020-05-28', 'adoption'),
-        expression='zho@', expression_date=('2020-05-28', 'adoption'), articles=1260),
+        expression='zho@', expression_date=('2020-05-28', 'adoption'), articles=1260,
+        publication=dict(date='2020-05-28', name='presidentialOrder', number='45', showAs='中华人民共和国主席令第四十五号'),
+        in_force='2021-01-01'),                                   # Art. 1260
     'criminal': dict(
         source='criminal_law_2023-12-29.txt', out='criminal-law.akn.xml', title='中华人民共和国刑法',
         work='/akn/cn/act/1997-03-14/criminal-law', work_date=('1997-03-14', 'revision'),
-        expression='zho@2023-12-29', expression_date=('2023-12-29', 'consolidation'), articles=None),
+        expression='zho@2023-12-29', expression_date=('2023-12-29', 'consolidation'), articles=None,
+        publication=None,                                         # order number of the 1997 revision not verified
+        in_force='1997-10-01'),                                   # Art. 452
 }
+
+
+AMEND = re.compile(r'(\d{4})年(\d{1,2})月(\d{1,2})日(中华人民共和国刑法修正案(?:（([一二三四五六七八九十]+)）)?|《全国人民代表大会常务委员会关于修改部分法律的决定》)')
+
+
+def amendments(preface):
+    """Header of the consolidated Criminal Law -> [(date, title, AKN URI of the amending act)]."""
+    out = []
+    for y, mo, d, title, n in AMEND.findall(' '.join(preface)):
+        date = f'{int(y):04d}-{int(mo):02d}-{int(d):02d}'
+        if '决定' in title:
+            name = 'decision-amending-certain-laws'
+        else:
+            name = f'criminal-law-amendment-{cn2int(n) if n else 1}'
+        out.append((date, title.strip('《》'), f'/akn/cn/act/{date}/{name}/zho@'))
+    return out
 
 
 def cn2int(s):
@@ -191,9 +211,27 @@ def build(law, today):
     sub(m, 'FRBRuri', value=f'{expr}.akn')
     sub(m, 'FRBRdate', date=today, name='generation')
     sub(m, 'FRBRauthor', href='#cnlex')
+    if cfg['publication']:
+        sub(meta, 'publication', **cfg['publication'])
+    amends = amendments(preface) if law == 'criminal' else []
+    life = sub(meta, 'lifecycle', source='#cnlex')
+    sub(life, 'eventRef', eId='evt_1', date=cfg['work_date'][0], source='#original', type='generation')
+    sub(life, 'eventRef', eId='evt_2', date=cfg['in_force'], source='#original', type='generation')
+    for i, (date, _title, _uri) in enumerate(amends, 1):
+        sub(life, 'eventRef', eId=f'evt_{i + 2}', date=date, source=f'#amd_{i}', type='amendment')
+    temp = sub(meta, 'temporalData', source='#cnlex')
+    sub(sub(temp, 'temporalGroup', eId='tg_1'), 'timeInterval', start='#evt_2', refersTo='#inForce')
     refs = sub(meta, 'references', source='#cnlex')
+    sub(refs, 'original', eId='original', href=work + '/' + ('zho@' if law == 'civil' else f"zho@{cfg['work_date'][0]}"),
+        showAs=cfg['title'])
+    for i, (_date, title, uri) in enumerate(amends, 1):
+        sub(refs, 'passiveRef', eId=f'amd_{i}', href=uri, showAs=title)
     sub(refs, 'TLCOrganization', eId='npc', href='/ontology/organization/cn/npc', showAs="National People's Congress")
+    if amends:
+        sub(refs, 'TLCOrganization', eId='npcsc', href='/ontology/organization/cn/npcsc',
+            showAs="Standing Committee of the National People's Congress")
     sub(refs, 'TLCOrganization', eId='cnlex', href='/ontology/organization/cnlex', showAs='CN-LEX')
+    sub(refs, 'TLCConcept', eId='inForce', href='/ontology/concept/inForce', showAs='in force')
     pre = sub(act, 'preface')
     t = sub(pre, 'p', **{'class': 'title'})
     sub(t, 'docTitle', cfg['title'])

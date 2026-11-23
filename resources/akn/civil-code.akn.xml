@@ -25,9 +25,21 @@
      <FRBRauthor href="#cnlex" />
     </FRBRManifestation>
    </identification>
+   <publication date="2020-05-28" name="presidentialOrder" number="45" showAs="中华人民共和国主席令第四十五号" />
+   <lifecycle source="#cnlex">
+    <eventRef eId="evt_1" date="2020-05-28" source="#original" type="generation" />
+    <eventRef eId="evt_2" date="2021-01-01" source="#original" type="generation" />
+   </lifecycle>
+   <temporalData source="#cnlex">
+    <temporalGroup eId="tg_1">
+     <timeInterval start="#evt_2" refersTo="#inForce" />
+    </temporalGroup>
+   </temporalData>
    <references source="#cnlex">
+    <original eId="original" href="/akn/cn/act/2020-05-28/civil-code/zho@" showAs="中华人民共和国民法典" />
     <TLCOrganization eId="npc" href="/ontology/organization/cn/npc" showAs="National People's Congress" />
     <TLCOrganization eId="cnlex" href="/ontology/organization/cnlex" showAs="CN-LEX" />
+    <TLCConcept eId="inForce" href="/ontology/concept/inForce" showAs="in force" />
    </references>
   </meta>
   <preface>
